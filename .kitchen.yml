@@ -1,5 +1,43 @@
 ---
+provisioner:
+  data_bags_path: test/integration/data_bags
+  encrypted_data_bag_secret_key_path: test/integration/encrypted_data_bag_secret
+  attributes:
+    percona:
+      encrypted_data_bag: percona
+      encrypted_data_bag_secret_file: "/etc/chef/encrypted_data_bag_secret"
+    postfix:
+      main:
+        inet_interfaces: 'loopback-only'
+        mynetworks_style: 'host'
+        myorigin: 'localhost'
+        relayhost: ''
+
 suites:
   - name: default
     run_list:
+      - recipe[osl-imap-test::default]
       - recipe[osl-imap::default]
+      - recipe[osl-imap-test::send_test_email]
+  - name: auth_sql
+    run_list:
+      - recipe[osl-imap-test::auth_sql]
+      - recipe[osl-imap::default]
+      - recipe[osl-imap-test::send_test_email]
+    attributes:
+      osl-imap:
+        auth_sql:
+          enable_userdb: true
+          enable_passdb: true
+          data_bag: 'sql_creds'
+          data_bag_item: 'mysql'
+    driver:
+      flavor_ref: 'm1.medium'
+  - name: lmtp
+    run_list:
+      - recipe[osl-imap-test::default]
+      - recipe[osl-imap::default]
+      - recipe[osl-imap-test::send_test_email]
+    attributes:
+      osl-imap:
+        enable_lmtp: true

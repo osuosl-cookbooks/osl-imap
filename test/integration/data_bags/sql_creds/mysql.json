@@ -1,0 +1,8 @@
+{
+  "id": "mysql",
+  "host": "127.0.0.1",
+  "db": "dovecot",
+  "user": "dovecot_user",
+  "pass": "dovecot_pass",
+  "type": "mysql"
+}

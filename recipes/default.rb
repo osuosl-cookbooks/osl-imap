@@ -16,3 +16,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+auth_sql    = node['osl-imap']['auth_sql']
+auth_system = node['osl-imap']['auth_system']
+
+# Enable IMAP & POP3
+%w(imap pop3).each do |protocol|
+  node.default['dovecot']['protocols'][protocol] = {}
+end
+
+# Disable non-TLS IMAP and POP3 ports (143 & 110)
+%w(imap pop3).each do |protocol|
+  node.default['dovecot']['services']["#{protocol}-login"]['listeners'] = [{ "inet:#{protocol}" => { 'port' => 0 } }]
+end
+
+# conf.d/10-auth.conf
+# Enable plaintext auth mechanisms as defaults, but disallow using them without TLS
+node.default['dovecot']['conf']['auth_mechanisms'] = %w(plain login)
+node.default['dovecot']['conf']['disable_plaintext_auth'] = true
+
+# Authentication socket for use with Postfix
+node.default['dovecot']['services']['auth']['listeners'] = [
+  {
+    'unix:/var/spool/postfix/private/auth' => {
+      'mode'  => '0660',
+      'user'  => 'postfix',
+      'group' => 'postfix',
+    },
+  },
+]
+
+# conf.d/10-ssl.conf
+node.default['dovecot']['conf']['ssl'] = 'required'
+node.default['dovecot']['conf']['ssl_cert'] = '</etc/pki/tls/certs/wildcard.pem'
+node.default['dovecot']['conf']['ssl_key']  = '</etc/pki/tls/private/wildcard.key'
+
+if node['certificate'].any?
+  include_recipe 'certificate::manage_by_attributes'
+else
+  include_recipe 'certificate::wildcard'
+end
+
+include_recipe 'firewall::imaps_pop3s'
+include_recipe 'osl-imap::auth_system' if auth_system['enable_userdb'] || auth_system['enable_passdb']
+include_recipe 'osl-imap::auth_sql'    if auth_sql['enable_userdb'] || auth_sql['enable_passdb']
+include_recipe 'osl-imap::lmtp'        if node['osl-imap']['enable_lmtp']
+include_recipe 'dovecot::default'

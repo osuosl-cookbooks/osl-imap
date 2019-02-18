@@ -1,0 +1,10 @@
+{
+  "id": "system",
+  "root": {
+    "encrypted_data": "3uLKSwDRR6iCFCeRh6X1Njz39AFCHjWh/0MF6wHROck=\n",
+    "hmac": "d0tDgGjyEFJYUr6NCIIFyPlnCJohLkO5ep3fRz7YxeU=\n",
+    "iv": "yxowISCmM0i1tML1y4CAtA==\n",
+    "version": 2,
+    "cipher": "aes-256-cbc"
+  }
+}

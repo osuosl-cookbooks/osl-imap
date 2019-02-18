@@ -4,21 +4,17 @@ A wrapper cookbook providing IMAP capabilities for the Open Source Lab.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any
-requirements this cookbook has on platforms, libraries, other cookbooks,
-packages, operating systems, etc.
 
 #### Platforms
 - CentOS 7
 
 #### Cookbooks
+- [certificate](https://supermarket.chef.io/cookbooks/certificate)
 - [dovecot](https://supermarket.chef.io/cookbooks/dovecot)
+- [firewall](https://github.com/osuosl-cookbooks/firewall)
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
-
-e.g.
 #### osl-imap::default
 <table>
   <tr>
@@ -28,29 +24,56 @@ e.g.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['osl-imap']['bacon']</tt></td>
+    <td><tt>['osl-imap']['auth_sql']['data_bag']</tt></td>
+    <td>String</td>
+    <td>Name of databag containing SQL credentials</td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['osl-imap']['auth_sql']['data_bag_item']</tt></td>
+    <td>String</td>
+    <td>Name of databag item containing SQL credentials</td>
+    <td><tt>nil</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['osl-imap']['auth_sql']['enable_userdb']</tt></td>
     <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td>Whether to enable SQL as an authentication backend for identifying users. Requires <tt>node['dovecot']['conf']['sql']['user_query']</tt> to be specified.</td>
+    <td><tt>false</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['osl-imap']['auth_sql']['enable_passdb']</tt></td>
+    <td>Boolean</td>
+    <td>Whether to enable SQL as an authentication backend for verifying passwords. Requires <tt>node['dovecot']['conf']['sql']['password_query']</tt> to be specified.</td>
+    <td><tt>false</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['osl-imap']['auth_system']['enable_userdb']</tt></td>
+    <td>Boolean</td>
+    <td>Whether to use the system's passwd file as an authentication backend for identifying users.</td>
+    <td><tt>false</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['osl-imap']['auth_system']['enable_passdb']</tt></td>
+    <td>Boolean</td>
+    <td>Whether to enable PAM as an authentication backend for verifying passwords.</td>
+    <td><tt>false</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['osl-imap']['enable_lmtp']</tt></td>
+    <td>Boolean</td>
+    <td>Whether to enable Lightweight Mail Transfer Protocol (LMTP) socket (for use with Postfix).</td>
+    <td><tt>false</tt></td>
   </tr>
 </table>
 
 Usage
 -----
-#### osl-imap::default
-TODO: Write usage instructions for each cookbook.
-
-e.g.
-Just include `osl-imap` in your node's `run_list`:
-
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[osl-imap]"
-  ]
-}
-```
+To use this cookbook to install and configure dovecot, include `osl-imap::default` and set the
+needed attributes from the `osl-imap` and `dovecot` cookbooks. This cookbook includes several
+attribute toggles for enabling/disabling different authentication backends for dovecot, but
+more specific non-default configurations will require setting relevant attributes in the `dovecot`
+cookbook.
 
 Contributing
 ------------

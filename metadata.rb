@@ -7,7 +7,7 @@ issues_url       'https://github.com/osuosl-cookbooks/osl-imap/issues'
 source_url       'https://github.com/osuosl-cookbooks/osl-imap'
 description      'Installs/Configures osl-imap'
 long_description 'Installs/Configures osl-imap'
-version          '0.1.0'
+version          '1.0.0'
 
 supports         'centos', '~> 7.0'
 

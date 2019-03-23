@@ -3,6 +3,10 @@ provisioner:
   data_bags_path: test/integration/data_bags
   encrypted_data_bag_secret_key_path: test/integration/encrypted_data_bag_secret
   attributes:
+    osl-imap:
+      auth_sql:
+        data_bag: 'sql_creds'
+        data_bag_item: 'mysql'
     percona:
       encrypted_data_bag: percona
       encrypted_data_bag_secret_file: "/etc/chef/encrypted_data_bag_secret"
@@ -29,8 +33,6 @@ suites:
         auth_sql:
           enable_userdb: true
           enable_passdb: true
-          data_bag: 'sql_creds'
-          data_bag_item: 'mysql'
     driver:
       flavor_ref: 'm1.medium'
   - name: lmtp

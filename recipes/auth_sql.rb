@@ -38,23 +38,3 @@ else
   raise "osl-imap::auth_sql currently only supports database drivers 'mysql' & 'pgsql' in
 node['dovecot']['conf']['sql']['driver']. Fix the databag or update the recipe."
 end
-
-include_recipe 'dovecot::default' # Must include here for edit_resource
-
-edit_resource(:template, '(core) dovecot-sql.conf.ext') do
-  cookbook 'osl-imap'
-  variables(auth: node['dovecot']['auth'].to_hash,
-            protocols: node['dovecot']['protocols'].to_hash,
-            services: node['dovecot']['services'].to_hash,
-            plugins: node['dovecot']['plugins'].to_hash,
-            namespaces: node['dovecot']['namespaces'],
-            conf: node['dovecot']['conf'],
-            # We edited @connect into the template to avoid putting secrets in attributes
-            connect: %W(
-              host=#{creds['host']}
-              dbname=#{creds['db']}
-              user=#{creds['user']}
-              password=#{creds['pass']}
-            ),
-            sensitive: true)
-end

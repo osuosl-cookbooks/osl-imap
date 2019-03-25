@@ -1,6 +1,7 @@
 source 'https://supermarket.chef.io'
 solver :ruby, :required
 
+cookbook 'apache2', '< 6.0.0'
 cookbook 'base', git: 'git@github.com:osuosl-cookbooks/base'
 cookbook 'dovecot', git: 'git@github.com:osuosl-cookbooks/dovecot-cookbook'
 cookbook 'firewall', git: 'git@github.com:osuosl-cookbooks/firewall'

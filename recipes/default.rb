@@ -18,6 +18,7 @@
 
 auth_sql    = node['osl-imap']['auth_sql']
 auth_system = node['osl-imap']['auth_system']
+creds = data_bag_item(auth_sql['data_bag'], auth_sql['data_bag_item'])
 
 # Enable IMAP & POP3
 %w(imap pop3).each do |protocol|
@@ -61,3 +62,22 @@ include_recipe 'osl-imap::auth_system' if auth_system['enable_userdb'] || auth_s
 include_recipe 'osl-imap::auth_sql'    if auth_sql['enable_userdb'] || auth_sql['enable_passdb']
 include_recipe 'osl-imap::lmtp'        if node['osl-imap']['enable_lmtp']
 include_recipe 'dovecot::default'
+
+edit_resource(:template, '(core) dovecot-sql.conf.ext') do
+  cookbook 'osl-imap'
+  variables(auth: node['dovecot']['auth'].to_hash,
+            protocols: node['dovecot']['protocols'].to_hash,
+            services: node['dovecot']['services'].to_hash,
+            plugins: node['dovecot']['plugins'].to_hash,
+            namespaces: node['dovecot']['namespaces'],
+            conf: node['dovecot']['conf'],
+            # We edited @connect into the template to avoid putting secrets in attributes
+            connect: %W(
+              host=#{creds['host']}
+              dbname=#{creds['db']}
+              user=#{creds['user']}
+              password=#{creds['pass']}
+            ),
+            sensitive: true)
+  only_if { auth_sql['enable_userdb'] || auth_sql['enable_passdb'] }
+end

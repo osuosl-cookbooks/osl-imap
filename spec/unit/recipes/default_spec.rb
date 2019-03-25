@@ -29,6 +29,9 @@ describe 'osl-imap::default' do
           expect(chef_run).to_not include_recipe recipe
         end
       end
+      it do
+        expect(chef_run).to_not create_template '(core) dovecot-sql.conf.ext'
+      end
       context 'LMTP enabled' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p) do |node|
@@ -51,6 +54,9 @@ describe 'osl-imap::default' do
           end
           it do
             expect(chef_run).to include_recipe 'osl-imap::auth_sql'
+          end
+          it do
+            expect(chef_run).to create_template '(core) dovecot-sql.conf.ext'
           end
         end
       end

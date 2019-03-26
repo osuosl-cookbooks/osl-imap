@@ -18,7 +18,11 @@
 
 auth_sql    = node['osl-imap']['auth_sql']
 auth_system = node['osl-imap']['auth_system']
-creds = data_bag_item(auth_sql['data_bag'], auth_sql['data_bag_item'])
+
+auth_sql_enabled    = auth_sql['enable_userdb'] || auth_sql['enable_passdb']
+auth_system_enabled = auth_system['enable_userdb'] || auth_system['enable_passdb']
+
+creds = auth_sql_enabled ? data_bag_item(auth_sql['data_bag'], auth_sql['data_bag_item']) : {}
 
 # Enable IMAP & POP3
 %w(imap pop3).each do |protocol|
@@ -58,8 +62,8 @@ else
 end
 
 include_recipe 'firewall::imaps_pop3s'
-include_recipe 'osl-imap::auth_system' if auth_system['enable_userdb'] || auth_system['enable_passdb']
-include_recipe 'osl-imap::auth_sql'    if auth_sql['enable_userdb'] || auth_sql['enable_passdb']
+include_recipe 'osl-imap::auth_system' if auth_system_enabled
+include_recipe 'osl-imap::auth_sql'    if auth_sql_enabled
 include_recipe 'osl-imap::lmtp'        if node['osl-imap']['enable_lmtp']
 include_recipe 'dovecot::default'
 
@@ -79,5 +83,5 @@ edit_resource(:template, '(core) dovecot-sql.conf.ext') do
               password=#{creds['pass']}
             ),
             sensitive: true)
-  only_if { auth_sql['enable_userdb'] || auth_sql['enable_passdb'] }
+  only_if { auth_sql_enabled }
 end

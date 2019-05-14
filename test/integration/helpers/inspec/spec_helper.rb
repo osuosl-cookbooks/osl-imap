@@ -21,14 +21,14 @@ describe file '/etc/dovecot/conf.d/10-auth.conf' do
 end
 
 describe file '/etc/dovecot/conf.d/10-master.conf' do
-  its('content') do 
+  its('content') do
     should match %r{service auth {
-   unix_listener /var/spool/postfix/private/auth {
-     group = postfix
-     mode = 0660
-     user = postfix
-   }
- }}
+  unix_listener /var/spool/postfix/private/auth {
+    group = postfix
+    mode = 0660
+    user = postfix
+  }
+}}
   end
 end
 

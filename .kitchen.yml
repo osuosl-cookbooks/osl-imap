@@ -21,6 +21,23 @@ suites:
       - recipe[osl-imap-test::default]
       - recipe[osl-imap::default]
       - recipe[osl-imap-test::send_test_email]
+  - name: letsencrypt
+    driver:
+      name: openstack
+      flavor_ref: 'm1.medium'
+    run_list:
+      - recipe[osl-imap-test::default]
+      - recipe[osl-imap-test::letsencrypt]
+      - recipe[osl-imap::default]
+      - recipe[osl-imap-test::send_test_email]
+    attributes:
+      osl-imap:
+        letsencrypt: true
+      boulder:
+        host_aliases:
+          - imap.osuosl.org
+      acme:
+        endpoint: http://127.0.0.1:4000
   - name: auth_sql
     run_list:
       - recipe[osl-imap-test::auth_sql]

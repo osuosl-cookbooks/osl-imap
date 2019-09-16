@@ -5,3 +5,4 @@ default['osl-imap']['auth_sql']['enable_passdb'] = false
 default['osl-imap']['auth_system']['enable_userdb'] = false
 default['osl-imap']['auth_system']['enable_passdb'] = false
 default['osl-imap']['enable_lmtp'] = false
+default['osl-imap']['letsencrypt'] = false

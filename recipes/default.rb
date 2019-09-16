@@ -50,15 +50,17 @@ node.default['dovecot']['services']['auth']['listeners'] = [
   },
 ]
 
-# conf.d/10-ssl.conf
-node.default['dovecot']['conf']['ssl'] = 'required'
-node.default['dovecot']['conf']['ssl_cert'] = '</etc/pki/tls/certs/wildcard.pem'
-node.default['dovecot']['conf']['ssl_key']  = '</etc/pki/tls/private/wildcard.key'
+unless node['osl-imap']['letsencrypt']
+  # conf.d/10-ssl.conf
+  node.default['dovecot']['conf']['ssl'] = 'required'
+  node.default['dovecot']['conf']['ssl_cert'] = '</etc/pki/tls/certs/wildcard.pem'
+  node.default['dovecot']['conf']['ssl_key']  = '</etc/pki/tls/private/wildcard.key'
 
-if node['certificate'].any?
-  include_recipe 'certificate::manage_by_attributes'
-else
-  include_recipe 'certificate::wildcard'
+  if node['certificate'].any?
+    include_recipe 'certificate::manage_by_attributes'
+  else
+    include_recipe 'certificate::wildcard'
+  end
 end
 
 include_recipe 'firewall::imaps_pop3s'

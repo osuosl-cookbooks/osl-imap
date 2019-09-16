@@ -9,6 +9,8 @@ description      'Installs/Configures osl-imap-test'
 long_description 'Installs/Configures osl-imap-test'
 version          '0.1.0'
 
+depends          'osl-acme'
+depends          'osl-apache'
 depends          'osl-mysql'
 depends          'osl-postfix'
 

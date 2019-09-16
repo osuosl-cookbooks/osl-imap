@@ -32,14 +32,29 @@ describe 'osl-imap::default' do
       it do
         expect(chef_run).to_not create_template '(core) dovecot-sql.conf.ext'
       end
+      context 'LetsEncrypt enabled' do
+        cached(:chef_run) do
+          ChefSpec::SoloRunner.new(p) do |node|
+            node.force_default['osl-imap']['letsencrypt'] = true
+          end.converge(described_recipe)
+        end
+        it do
+          expect(chef_run).to_not include_recipe 'certificate::wildcard'
+        end
+      end
       context 'LMTP enabled' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p) do |node|
             node.force_default['osl-imap']['enable_lmtp'] = true
           end.converge(described_recipe)
-        end
-        it do
-          expect(chef_run).to include_recipe 'osl-imap::lmtp'
+          %w(
+            certificate::wildcard
+            certificate::manage_by_attributes
+          ).each do |recipe|
+            it do
+              expect(chef_run).to_not include_recipe recipe
+            end
+          end
         end
       end
       %w(userdb passdb).each do |db|

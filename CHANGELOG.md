@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+1.1.0 (2019-09-16)
+------------------
+- Add support for LetsEncrypt
+
 1.0.2 (2019-03-27)
 ------------------
 - Allow default to handle undefined auth_sql databags

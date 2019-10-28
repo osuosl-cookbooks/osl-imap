@@ -37,7 +37,7 @@ suites:
         host_aliases:
           - imap.osuosl.org
       acme:
-        endpoint: http://127.0.0.1:4000
+        dir: http://127.0.0.1:4001/directory
   - name: auth_sql
     run_list:
       - recipe[osl-imap-test::auth_sql]

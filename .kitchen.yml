@@ -33,11 +33,10 @@ suites:
     attributes:
       osl-imap:
         letsencrypt: true
-      boulder:
-        host_aliases:
-          - imap.osuosl.org
-      acme:
-        dir: http://127.0.0.1:4001/directory
+      osl-acme:
+        pebble:
+          host_aliases:
+            - imap.osuosl.org
   - name: auth_sql
     run_list:
       - recipe[osl-imap-test::auth_sql]

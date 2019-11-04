@@ -4,7 +4,6 @@ include_recipe 'apache2::mod_ssl'
 include_recipe 'osl-acme'
 
 cert_path = '/etc/pki/tls/imap.osuosl.org.crt'
-chain_path = '/etc/pki/tls/imap.osuosl.org-chain.crt'
 key_path = '/etc/pki/tls/imap.osuosl.org.key'
 
 apache_app 'imap.osuosl.org' do
@@ -12,19 +11,16 @@ apache_app 'imap.osuosl.org' do
   ssl_enable true
   cert_file cert_path
   cert_key key_path
-  cert_chain chain_path
 end
 
 acme_selfsigned 'imap.osuosl.org' do
   crt cert_path
-  chain chain_path
   key key_path
   notifies :restart, 'service[apache2]', :immediately
 end
 
 acme_certificate 'imap.osuosl.org' do
   crt cert_path
-  chain chain_path
   key key_path
   wwwroot '/var/www/imap.osuosl.org/'
   notifies :restart, 'service[apache2]'

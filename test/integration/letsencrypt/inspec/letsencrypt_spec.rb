@@ -47,7 +47,6 @@ end
 
 %w(
   /etc/pki/tls/imap.osuosl.org.crt
-  /etc/pki/tls/imap.osuosl.org-chain.crt
   /etc/pki/tls/imap.osuosl.org.key
 ).each do |f|
   describe file f do

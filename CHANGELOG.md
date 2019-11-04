@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+1.1.1 (2019-11-04)
+------------------
+- Switch to using Pebble ACME server
+
 1.1.0 (2019-09-16)
 ------------------
 - Add support for LetsEncrypt

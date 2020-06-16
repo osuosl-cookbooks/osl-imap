@@ -1,10 +1,10 @@
 source 'https://supermarket.chef.io'
 solver :ruby, :required
 
-cookbook 'apache2', '< 6.0.0'
 cookbook 'base', git: 'git@github.com:osuosl-cookbooks/base'
 cookbook 'dovecot', git: 'git@github.com:osuosl-cookbooks/dovecot-cookbook'
 cookbook 'firewall', git: 'git@github.com:osuosl-cookbooks/firewall'
+cookbook 'munin', git: 'git@github.com:osuosl-cookbooks/munin'
 cookbook 'osl-acme', git: 'git@github.com:osuosl-cookbooks/osl-acme'
 cookbook 'osl-apache', git: 'git@github.com:osuosl-cookbooks/osl-apache'
 cookbook 'osl-docker', git: 'git@github.com:osuosl-cookbooks/osl-docker'

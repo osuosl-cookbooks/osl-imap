@@ -18,4 +18,11 @@
 
 execute 'sendmail foo@foo.org <<< "Subject: IMAP Test Email for Foo
 This test email should be fetchable via IMAP.
-."'
+."' do
+  creates '/tmp/test_email_sent'
+  notifies :create, 'file[/tmp/test_email_sent]'
+end
+
+file '/tmp/test_email_sent' do
+  action :nothing
+end

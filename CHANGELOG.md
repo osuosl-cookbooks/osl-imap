@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+1.2.0 (2020-07-07)
+------------------
+- Fixes for Chef 15
+
 1.1.2 (2019-12-23)
 ------------------
 - Chef 14 post-migration fixes

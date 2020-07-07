@@ -2,7 +2,7 @@
 # Cookbook:: osl-imap-test
 # Recipe:: auth_sql
 #
-# Copyright:: 2018, Oregon State University
+# Copyright:: 2018-2020, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ mysql_database db['db'] do
   connection connect_info
   sql <<-EOT
     CREATE TABLE IF NOT EXISTS users (
-      username VARCHAR(128) NOT NULL,
+      username VARCHAR(128) NOT NULL UNIQUE,
       domain VARCHAR(128) NOT NULL,
       password VARCHAR(120) NOT NULL,
       home VARCHAR(255) NOT NULL,
@@ -80,6 +80,6 @@ end
 
 mysql_database db['db'] do
   connection connect_info
-  sql "INSERT INTO users VALUES ('foo', 'foo.org', '{SHA512-CRYPT}$6$.rQ8TNWq1dDlHMF3$R4Wb8DaF5TNjeequKpMKHIBKlZIbHvoQwikWTTEMmKO7i8tTmQyVFNoqBUsO2h.1.PkkfaMqbTI88mSSKAU580', '/home/foo', 1234, 100);"
+  sql "INSERT IGNORE INTO users VALUES ('foo', 'foo.org', '{SHA512-CRYPT}$6$.rQ8TNWq1dDlHMF3$R4Wb8DaF5TNjeequKpMKHIBKlZIbHvoQwikWTTEMmKO7i8tTmQyVFNoqBUsO2h.1.PkkfaMqbTI88mSSKAU580', '/home/foo', 1234, 100);"
   action [:query]
 end

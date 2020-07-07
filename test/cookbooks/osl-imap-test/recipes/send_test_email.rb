@@ -2,7 +2,7 @@
 # Cookbook:: osl-imap-test
 # Recipe:: send_test_email
 #
-# Copyright:: 2018, Oregon State University
+# Copyright:: 2018-2020, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,4 +18,11 @@
 
 execute 'sendmail foo@foo.org <<< "Subject: IMAP Test Email for Foo
 This test email should be fetchable via IMAP.
-."'
+."' do
+  creates '/tmp/test_email_sent'
+  notifies :create, 'file[/tmp/test_email_sent]'
+end
+
+file '/tmp/test_email_sent' do
+  action :nothing
+end

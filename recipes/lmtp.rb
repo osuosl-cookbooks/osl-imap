@@ -2,7 +2,7 @@
 # Cookbook:: osl-imap
 # Recipe:: lmtp
 #
-# Copyright:: 2018, Oregon State University
+# Copyright:: 2018-2020, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,5 +32,5 @@ node.default['dovecot']['services']['lmtp']['listeners'] = [
 ]
 
 # Use LMTP for both local and virtual deliveries
-node.normal['postfix']['main']['local_transport']   = 'lmtp:unix:private/dovecot-lmtp'
-node.normal['postfix']['main']['virtual_transport'] = 'lmtp:unix:private/dovecot-lmtp'
+node.default['postfix']['main']['local_transport']   = 'lmtp:unix:private/dovecot-lmtp'
+node.default['postfix']['main']['virtual_transport'] = 'lmtp:unix:private/dovecot-lmtp'

@@ -45,27 +45,18 @@ include_recipe 'osl-mysql::server'
 db = data_bag_item(node['osl-imap']['auth_sql']['data_bag'],
                    node['osl-imap']['auth_sql']['data_bag_item'])
 
-mysql2_chef_gem 'default' do
-  provider Chef::Provider::Mysql2ChefGem::Percona
-  action :install
-end
-
-connect_info = {
-  host: '127.0.0.1',
-  user: 'root',
-  password: 'password',
-}
-
-mysql_database_user db['user'] do
+mariadb_user db['user'] do
   database_name db['db']
   password db['pass']
-  connection connect_info
+  ctrl_password 'password'
   action [:create, :grant]
 end
 
-mysql_database db['db'] do
-  connection connect_info
+mariadb_database 'test' do
+  database_name db['db']
+  password 'password'
   sql <<-EOT
+    USE #{db['db']};
     CREATE TABLE IF NOT EXISTS users (
       username VARCHAR(128) NOT NULL UNIQUE,
       domain VARCHAR(128) NOT NULL,
@@ -78,8 +69,10 @@ mysql_database db['db'] do
   action [:create, :query]
 end
 
-mysql_database db['db'] do
-  connection connect_info
-  sql "INSERT IGNORE INTO users VALUES ('foo', 'foo.org', '{SHA512-CRYPT}$6$.rQ8TNWq1dDlHMF3$R4Wb8DaF5TNjeequKpMKHIBKlZIbHvoQwikWTTEMmKO7i8tTmQyVFNoqBUsO2h.1.PkkfaMqbTI88mSSKAU580', '/home/foo', 1234, 100);"
-  action [:query]
+mariadb_database '' do
+  database_name db['db']
+  password 'password'
+  # Note the extra breaks in the password field are needed to make sure mariadb doesn't try to format the numbers after $
+  sql "USE #{db['db']}; INSERT IGNORE INTO users VALUES ('foo', 'foo.org', '{SHA512-CRYPT}$' '6' '$.rQ8TNWq1dDlHMF3' '$' 'R4Wb8DaF5TNjeequKpMKHIBKlZIbHvoQwikWTTEMmKO7i8tTmQyVFNoqBUsO2h.1.PkkfaMqbTI88mSSKAU580', '/home/foo', 1234, 100);"
+  action :query
 end

@@ -45,14 +45,14 @@ include_recipe 'osl-mysql::server'
 db = data_bag_item(node['osl-imap']['auth_sql']['data_bag'],
                    node['osl-imap']['auth_sql']['data_bag_item'])
 
-mariadb_user db['user'] do
+percona_mysql_user db['user'] do
   database_name db['db']
   password db['pass']
   ctrl_password 'password'
   action [:create, :grant]
 end
 
-mariadb_database 'test' do
+percona_mysql_database 'test' do
   database_name db['db']
   password 'password'
   sql <<-EOT
@@ -69,7 +69,7 @@ mariadb_database 'test' do
   action [:create, :query]
 end
 
-mariadb_database '' do
+percona_mysql_database '' do
   database_name db['db']
   password 'password'
   # Note the extra breaks in the password field are needed to make sure mariadb doesn't try to format the numbers after $

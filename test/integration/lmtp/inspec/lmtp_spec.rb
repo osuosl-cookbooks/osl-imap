@@ -32,7 +32,7 @@ describe command 'postconf local_transport virtual_transport' do
 end
 
 describe file '/var/log/maillog' do
-  its('content') { should match(/dovecot: lmtp\(foo\): .* saved mail to INBOX$/) }
+  its('content') { should match(/dovecot.*: lmtp\(foo\).*: .* saved mail to INBOX$/) }
 end
 
 # Log in and fetch mail via IMAPS port

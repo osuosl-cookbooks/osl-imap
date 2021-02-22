@@ -6,7 +6,7 @@ chef_version     '>= 14.0'
 issues_url       'https://github.com/osuosl-cookbooks/osl-imap/issues'
 source_url       'https://github.com/osuosl-cookbooks/osl-imap'
 description      'Installs/Configures osl-imap'
-version          '1.2.1'
+version          '1.2.2'
 
 supports         'centos', '~> 7.0'
 supports         'centos', '~> 8.0'

@@ -13,4 +13,4 @@ supports         'centos', '~> 8.0'
 
 depends          'certificate'
 depends          'dovecot', '~> 3.3.0'
-depends          'firewall'
+depends          'osl-firewall'

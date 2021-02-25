@@ -8,55 +8,47 @@ describe 'osl-imap::default' do
       cached(:chef_run) do
         ChefSpec::SoloRunner.new(p).converge(described_recipe)
       end
+
       it 'converges successfully' do
         expect { chef_run }.to_not raise_error
       end
-      %w(
-        certificate::wildcard
-        dovecot::default
-        firewall::imaps_pop3s
-      ).each do |recipe|
-        it do
-          expect(chef_run).to include_recipe recipe
-        end
-      end
+
+      it { expect(chef_run).to accept_osl_firewall_imaps_pop3s('osl-imap') }
+
+      it { expect(chef_run).to include_recipe('certificate::wildcard') }
+      it { expect(chef_run).to include_recipe('dovecot::default') }
+
       %w(
         osl-imap::auth_sql
         osl-imap::auth_system
         osl-imap::lmtp
-      ).each do |recipe|
-        it do
-          expect(chef_run).to_not include_recipe recipe
-        end
+      ).each do |r|
+        it { expect(chef_run).to_not include_recipe(r) }
       end
-      it do
-        expect(chef_run).to_not create_template '(core) dovecot-sql.conf.ext'
-      end
+
+      it { expect(chef_run).to_not create_template('(core) dovecot-sql.conf.ext') }
+
       context 'LetsEncrypt enabled' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p) do |node|
             node.force_default['osl-imap']['letsencrypt'] = true
           end.converge(described_recipe)
         end
-        it do
-          expect(chef_run).to_not include_recipe 'certificate::wildcard'
-        end
+
+        it { expect(chef_run).to_not include_recipe('certificate::wildcard') }
       end
+
       context 'LMTP enabled' do
         cached(:chef_run) do
           ChefSpec::SoloRunner.new(p) do |node|
             node.force_default['osl-imap']['enable_lmtp'] = true
           end.converge(described_recipe)
-          %w(
-            certificate::wildcard
-            certificate::manage_by_attributes
-          ).each do |recipe|
-            it do
-              expect(chef_run).to_not include_recipe recipe
-            end
-          end
+
+          it { expect(chef_run).to_not include_recipe('certificate::wildcard') }
+          it { expect(chef_run).to_not include_recipe('certificate::manage_by_attributes') }
         end
       end
+
       %w(userdb passdb).each do |db|
         context "SQL #{db} enabled" do
           cached(:chef_run) do
@@ -67,14 +59,13 @@ describe 'osl-imap::default' do
                                                                         "FROM users WHERE username = '%n' AND domain = '%d'"
             end.converge(described_recipe)
           end
-          it do
-            expect(chef_run).to include_recipe 'osl-imap::auth_sql'
-          end
-          it do
-            expect(chef_run).to create_template '(core) dovecot-sql.conf.ext'
-          end
+
+          it { expect(chef_run).to include_recipe('osl-imap::auth_sql') }
+
+          it { expect(chef_run).to create_template('(core) dovecot-sql.conf.ext') }
         end
       end
+
       %w(userdb passdb).each do |db|
         context "system #{db} enabled" do
           cached(:chef_run) do
@@ -82,9 +73,8 @@ describe 'osl-imap::default' do
               node.normal['osl-imap']['auth_system']["enable_#{db}"] = true
             end.converge(described_recipe)
           end
-          it do
-            expect(chef_run).to include_recipe 'osl-imap::auth_system'
-          end
+
+          it { expect(chef_run).to include_recipe('osl-imap::auth_system') }
         end
       end
     end

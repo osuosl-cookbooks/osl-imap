@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+1.3.0 (2021-04-06)
+------------------
+- Update Chef dependency to >= 16
+
 1.2.2 (2021-02-22)
 ------------------
 - Remove munin from Berksfile

@@ -63,27 +63,30 @@ unless node['osl-imap']['letsencrypt']
   end
 end
 
-include_recipe 'firewall::imaps_pop3s'
+osl_firewall_imaps_pop3s 'osl-imap'
+
 include_recipe 'osl-imap::auth_system' if auth_system_enabled
 include_recipe 'osl-imap::auth_sql'    if auth_sql_enabled
 include_recipe 'osl-imap::lmtp'        if node['osl-imap']['enable_lmtp']
 include_recipe 'dovecot::default'
 
+# edit connection info into the template to avoid putting secrets in attributes
 edit_resource(:template, '(core) dovecot-sql.conf.ext') do
   cookbook 'osl-imap'
-  variables(auth: node['dovecot']['auth'].to_hash,
-            protocols: node['dovecot']['protocols'].to_hash,
-            services: node['dovecot']['services'].to_hash,
-            plugins: node['dovecot']['plugins'].to_hash,
-            namespaces: node['dovecot']['namespaces'],
-            conf: node['dovecot']['conf'],
-            # We edited @connect into the template to avoid putting secrets in attributes
-            connect: %W(
-              host=#{creds['host']}
-              dbname=#{creds['db']}
-              user=#{creds['user']}
-              password=#{creds['pass']}
-            ),
-            sensitive: true)
+  variables(
+    auth: node['dovecot']['auth'].to_hash,
+    protocols: node['dovecot']['protocols'].to_hash,
+    services: node['dovecot']['services'].to_hash,
+    plugins: node['dovecot']['plugins'].to_hash,
+    namespaces: node['dovecot']['namespaces'],
+    conf: node['dovecot']['conf'],
+    connect: %W(
+      host=#{creds['host']}
+      dbname=#{creds['db']}
+      user=#{creds['user']}
+      password=#{creds['pass']}
+    ),
+    sensitive: true
+  )
   only_if { auth_sql_enabled }
 end

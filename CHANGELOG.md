@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+2.0.1 (2021-06-07)
+------------------
+- Use safer SSL settings
+
 2.0.0 (2021-05-25)
 ------------------
 - Update to new osl-firewall resources

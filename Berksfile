@@ -2,7 +2,6 @@ source 'https://supermarket.chef.io'
 solver :ruby, :required
 
 cookbook 'dovecot', git: 'git@github.com:osuosl-cookbooks/dovecot-cookbook'
-cookbook 'firewall', git: 'git@github.com:osuosl-cookbooks/firewall'
 cookbook 'osl-firewall', git: 'git@github.com:osuosl-cookbooks/osl-firewall'
 
 # test dependencies

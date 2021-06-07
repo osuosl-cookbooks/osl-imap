@@ -42,6 +42,18 @@ suites:
         pebble:
           host_aliases:
             - imap.osuosl.org
+    verifier:
+      inspec_tests:
+        - name: osuosl-baseline
+          git: https://github.com/osuosl/osuosl-baseline.git
+      controls:
+        - letsencrypt
+        - ssl-baseline
+      inputs:
+        ssl_port:
+          - 443
+          - 993
+          - 995
   - name: auth_sql
     run_list:
       - recipe[osl-imap-test::auth_sql]

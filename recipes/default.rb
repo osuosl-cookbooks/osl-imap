@@ -38,6 +38,11 @@ end
 # Enable plaintext auth mechanisms as defaults, but disallow using them without TLS
 node.default['dovecot']['conf']['auth_mechanisms'] = %w(plain login)
 node.default['dovecot']['conf']['disable_plaintext_auth'] = true
+node.default['dovecot']['conf']['ssl_cipher_list'] = 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:!DES-CBC3-SHA:!DSS'
+node.default['dovecot']['conf']['ssl_dh_parameters_length'] = '2048'
+node.default['dovecot']['conf']['ssl_options'] = 'no_compression no_ticket'
+node.default['dovecot']['conf']['ssl_prefer_server_ciphers'] = 'yes'
+node.default['dovecot']['conf']['ssl_protocols'] = 'TLSv1.2'
 
 # Authentication socket for use with Postfix
 node.default['dovecot']['services']['auth']['listeners'] = [

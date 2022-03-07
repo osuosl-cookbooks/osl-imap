@@ -9,7 +9,7 @@ description      'Installs/Configures osl-imap'
 version          '2.0.1'
 
 supports         'centos', '~> 7.0'
-supports         'centos', '~> 8.0'
+supports         'centos_stream', '~> 8.0'
 
 depends          'certificate'
 depends          'dovecot', '~> 3.3.0'

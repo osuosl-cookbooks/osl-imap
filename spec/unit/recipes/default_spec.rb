@@ -15,7 +15,14 @@ describe 'osl-imap::default' do
 
       it { expect(chef_run).to accept_osl_firewall_imaps_pop3s('osl-imap') }
 
-      it { expect(chef_run).to include_recipe('certificate::wildcard') }
+      it do
+        expect(chef_run).to create_certificate_manage('wildcard').with(
+          cert_file: 'wildcard.pem',
+          key_file: 'wildcard.key',
+          chain_file: 'wildcard-bundle.crt'
+        )
+        it { expect(chef_run.certificate_manage('wildcard')).to notify('service[apache2]').to(:reload) }
+      end
       it { expect(chef_run).to include_recipe('dovecot::default') }
 
       %w(
@@ -35,7 +42,7 @@ describe 'osl-imap::default' do
           end.converge(described_recipe)
         end
 
-        it { expect(chef_run).to_not include_recipe('certificate::wildcard') }
+        it { expect(chef_run).to_not create_certificate_manage('wildcard') }
       end
 
       context 'LMTP enabled' do
@@ -44,8 +51,7 @@ describe 'osl-imap::default' do
             node.force_default['osl-imap']['enable_lmtp'] = true
           end.converge(described_recipe)
 
-          it { expect(chef_run).to_not include_recipe('certificate::wildcard') }
-          it { expect(chef_run).to_not include_recipe('certificate::manage_by_attributes') }
+          it { expect(chef_run).to_not create_certificate_manage('wildcard') }
         end
       end
 
@@ -56,7 +62,7 @@ describe 'osl-imap::default' do
               node.normal['osl-imap']['auth_sql']["enable_#{db}"] = true
               node.normal['dovecot']['conf']['sql']['user_query'] = "SELECT home, uid, gid FROM users WHERE userid = '%u'"
               node.normal['dovecot']['conf']['sql']['password_query'] = 'SELECT username, domain, password' \
-                                                                        "FROM users WHERE username = '%n' AND domain = '%d'"
+                "FROM users WHERE username = '%n' AND domain = '%d'"
             end.converge(described_recipe)
           end
 

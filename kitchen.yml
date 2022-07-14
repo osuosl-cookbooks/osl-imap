@@ -6,7 +6,7 @@ provisioner:
   # the ohai_plugin from the dovecot cookbook fails idempotency checks
   # enforce_idempotency: true
   # multiple_converge: 2
-  deprecations_as_errors: true
+  deprecations_as_errors: false
   data_bags_path: test/integration/data_bags
   encrypted_data_bag_secret_key_path: test/integration/encrypted_data_bag_secret
   attributes:

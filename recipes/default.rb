@@ -64,7 +64,7 @@ unless node['osl-imap']['letsencrypt']
     cert_file 'wildcard.pem'
     key_file 'wildcard.key'
     chain_file 'wildcard-bundle.crt'
-    notifies :reload, 'service[apache2]'
+    notifies :reload, 'haproxy_service[haproxy]'
   end
 end
 

@@ -21,7 +21,7 @@ describe 'osl-imap::default' do
           key_file: 'wildcard.key',
           chain_file: 'wildcard-bundle.crt'
         )
-        it { expect(chef_run.certificate_manage('wildcard')).to notify('haproxy_service[haproxy]').to(:reload) }
+        expect(chef_run.certificate_manage('wildcard')).to notify('service[dovecot]').to(:reload)
       end
       it { expect(chef_run).to include_recipe('dovecot::default') }
 

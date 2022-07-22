@@ -60,11 +60,11 @@ unless node['osl-imap']['letsencrypt']
   node.default['dovecot']['conf']['ssl'] = 'required'
   node.default['dovecot']['conf']['ssl_cert'] = '</etc/pki/tls/certs/wildcard.pem'
   node.default['dovecot']['conf']['ssl_key']  = '</etc/pki/tls/private/wildcard.key'
-
-  if node['certificate'].any?
-    include_recipe 'certificate::manage_by_attributes'
-  else
-    include_recipe 'certificate::wildcard'
+  certificate_manage 'wildcard' do
+    cert_file 'wildcard.pem'
+    key_file 'wildcard.key'
+    chain_file 'wildcard-bundle.crt'
+    notifies :reload, 'service[dovecot]'
   end
 end
 
@@ -91,7 +91,7 @@ edit_resource(:template, '(core) dovecot-sql.conf.ext') do
       user=#{creds['user']}
       password=#{creds['pass']}
     ),
-    sensitive: true
+      sensitive: true
   )
   only_if { auth_sql_enabled }
 end

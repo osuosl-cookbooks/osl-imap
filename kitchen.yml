@@ -23,58 +23,62 @@ provisioner:
         relayhost: ''
 
 suites:
-  - name: default
+  # - name: default
+  #   run_list:
+  #     - recipe[osl-imap-test::default]
+  #     - recipe[osl-imap::default]
+  #     - recipe[osl-imap-test::send_test_email]
+  # - name: letsencrypt
+  #   driver:
+  #     name: openstack
+  #     flavor_ref: 'm1.medium'
+  #   run_list:
+  #     - recipe[osl-imap-test::default]
+  #     - recipe[osl-imap-test::letsencrypt]
+  #     - recipe[osl-imap::default]
+  #     - recipe[osl-imap-test::send_test_email]
+  #   attributes:
+  #     osl-imap:
+  #       letsencrypt: true
+  #     osl-acme:
+  #       pebble:
+  #         host_aliases:
+  #           - imap.osuosl.org
+  #   verifier:
+  #     inspec_tests:
+  #       - name: osuosl-baseline
+  #         git: https://github.com/osuosl/osuosl-baseline.git
+  #     controls:
+  #       - letsencrypt
+  #       - ssl-baseline
+  #     inputs:
+  #       ssl_port:
+  #         - 443
+  #         - 993
+  #         - 995
+  # - name: auth_sql
+  #   run_list:
+  #     - recipe[osl-imap-test::auth_sql]
+  #     - recipe[osl-imap::default]
+  #     - recipe[osl-imap-test::send_test_email]
+  #   attributes:
+  #     osl-imap:
+  #       auth_sql:
+  #         enable_userdb: true
+  #         enable_passdb: true
+  #         data_bag: 'sql_creds'
+  #         data_bag_item: 'mysql'
+  #   driver:
+  #     flavor_ref: 'm1.medium'
+  # - name: lmtp
+  #   run_list:
+  #     - recipe[osl-imap-test::default]
+  #     - recipe[osl-imap::default]
+  #     - recipe[osl-imap-test::send_test_email]
+  #   attributes:
+  #     osl-imap:
+  #       enable_lmtp: true
+
+  - name: dovecot
     run_list:
-      - recipe[osl-imap-test::default]
-      - recipe[osl-imap::default]
-      - recipe[osl-imap-test::send_test_email]
-  - name: letsencrypt
-    driver:
-      name: openstack
-      flavor_ref: 'm1.medium'
-    run_list:
-      - recipe[osl-imap-test::default]
-      - recipe[osl-imap-test::letsencrypt]
-      - recipe[osl-imap::default]
-      - recipe[osl-imap-test::send_test_email]
-    attributes:
-      osl-imap:
-        letsencrypt: true
-      osl-acme:
-        pebble:
-          host_aliases:
-            - imap.osuosl.org
-    verifier:
-      inspec_tests:
-        - name: osuosl-baseline
-          git: https://github.com/osuosl/osuosl-baseline.git
-      controls:
-        - letsencrypt
-        - ssl-baseline
-      inputs:
-        ssl_port:
-          - 443
-          - 993
-          - 995
-  - name: auth_sql
-    run_list:
-      - recipe[osl-imap-test::auth_sql]
-      - recipe[osl-imap::default]
-      - recipe[osl-imap-test::send_test_email]
-    attributes:
-      osl-imap:
-        auth_sql:
-          enable_userdb: true
-          enable_passdb: true
-          data_bag: 'sql_creds'
-          data_bag_item: 'mysql'
-    driver:
-      flavor_ref: 'm1.medium'
-  - name: lmtp
-    run_list:
-      - recipe[osl-imap-test::default]
-      - recipe[osl-imap::default]
-      - recipe[osl-imap-test::send_test_email]
-    attributes:
-      osl-imap:
-        enable_lmtp: true
+      - recipe[osl-imap::dovecot]

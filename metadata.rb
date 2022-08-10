@@ -12,5 +12,5 @@ supports         'centos', '~> 7.0'
 supports         'centos_stream', '~> 8.0'
 
 depends          'certificate'
-depends          'dovecot', '~> 3.3.0'
+# depends          'dovecot', '~> 3.3.0'
 depends          'osl-firewall'

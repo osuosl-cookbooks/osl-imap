@@ -7,3 +7,12 @@
 dovecot 'dovecot' do
   action :create
 end
+
+#template '/etc/dovecot/dovecot.conf' do
+#  source 'dovecot.conf.erb'
+#end
+
+#directory '/etc/dovecot/conf.d' do
+#  recursive true
+#  action :delete
+#end

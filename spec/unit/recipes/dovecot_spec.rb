@@ -6,7 +6,7 @@
 
 require 'spec_helper'
 
-describe '.::dovecot' do
+describe 'osl-imap::dovecot' do
   context 'When all attributes are default, on Ubuntu 20.04' do
     # for a complete list of available platforms and versions see:
     # https://github.com/chefspec/fauxhai/blob/main/PLATFORMS.md

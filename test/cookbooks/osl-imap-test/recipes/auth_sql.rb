@@ -2,7 +2,7 @@
 # Cookbook:: osl-imap-test
 # Recipe:: auth_sql
 #
-# Copyright:: 2018-2022, Oregon State University
+# Copyright:: 2018-2023, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,23 +37,16 @@ node.default['dovecot']['conf']['sql']['password_query'] = 'SELECT username, dom
 node.default['dovecot']['conf']['sql']['user_query'] = 'SELECT home, uid, gid FROM users ' \
   "WHERE username = '%n' AND domain = '%d'"
 
-# Set up SQL database containing user and password info for Dovecot SQL auth
-node.default['percona']['skip_passwords'] = true
-
-include_recipe 'osl-mysql::server'
-
 db = data_bag_item(node['osl-imap']['auth_sql']['data_bag'],
                    node['osl-imap']['auth_sql']['data_bag_item'])
 
-percona_mysql_user db['user'] do
-  database_name db['db']
+osl_mysql_test db['db'] do
+  username db['user']
   password db['pass']
-  ctrl_password 'password'
-  action [:create, :grant]
+  server_password 'password'
 end
 
-percona_mysql_database 'test' do
-  database_name db['db']
+mariadb_database 'Create Tables' do
   password 'password'
   sql <<-EOT
     USE #{db['db']};
@@ -66,11 +59,10 @@ percona_mysql_database 'test' do
       gid INTEGER NOT NULL
     );
   EOT
-  action [:create, :query]
+  action :query
 end
 
-percona_mysql_database '' do
-  database_name db['db']
+mariadb_database 'Insert Users' do
   password 'password'
   # Note the extra breaks in the password field are needed to make sure mariadb doesn't try to format the numbers after $
   sql "USE #{db['db']}; INSERT IGNORE INTO users VALUES ('foo', 'foo.org', '{SHA512-CRYPT}$' '6' '$.rQ8TNWq1dDlHMF3' '$' 'R4Wb8DaF5TNjeequKpMKHIBKlZIbHvoQwikWTTEMmKO7i8tTmQyVFNoqBUsO2h.1.PkkfaMqbTI88mSSKAU580', '/home/foo', 1234, 100);"

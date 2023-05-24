@@ -7,6 +7,7 @@ Requirements
 
 #### Platforms
 - CentOS 7
+- AlmaLinux 8
 
 #### Cookbooks
 - [certificate](https://supermarket.chef.io/cookbooks/certificate)

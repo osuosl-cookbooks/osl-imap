@@ -9,7 +9,7 @@ key_path = '/etc/pki/tls/imap.osuosl.org.key'
 acme_selfsigned 'imap.osuosl.org' do
   crt cert_path
   key key_path
-  notifies :restart, 'service[apache2]', :immediately
+  notifies :restart, 'apache2_service[osuosl]', :immediately
 end
 
 apache_app 'imap.osuosl.org' do
@@ -23,7 +23,7 @@ acme_certificate 'imap.osuosl.org' do
   crt cert_path
   key key_path
   wwwroot '/var/www/imap.osuosl.org/'
-  notifies :restart, 'service[apache2]'
+  notifies :restart, 'apache2_service[osuosl]'
 end
 
 node.default['dovecot']['conf']['ssl'] = 'required'

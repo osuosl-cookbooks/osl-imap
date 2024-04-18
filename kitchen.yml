@@ -1,8 +1,17 @@
 ---
+driver:
+  name: vagrant
+
 verifier:
   name: inspec
+
+transport:
+  name: rsync
+
 provisioner:
-  name: chef_zero
+  name: chef_infra
+  product_name: cinc
+  product_version: '17'
   # the ohai_plugin from the dovecot cookbook fails idempotency checks
   # enforce_idempotency: true
   # multiple_converge: 2
@@ -24,7 +33,12 @@ provisioner:
         myorigin: 'localhost'
         relayhost: ''
 
+platforms:
+  - name: almalinux-8
+  - name: centos-7
+
 suites:
+  # All suites fail in Docker due to sendmail in osl-imap-test::sent_test_email
   - name: default
     run_list:
       - recipe[osl-imap-test::default]
@@ -32,7 +46,6 @@ suites:
       - recipe[osl-imap-test::send_test_email]
   - name: letsencrypt
     driver:
-      name: openstack
       flavor_ref: 'm1.medium'
     run_list:
       - recipe[osl-imap-test::default]

@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+2.0.4 (2024-04-22)
+------------------
+- Test Kitchen Config Refactor
+
 2.0.3 (2023-05-17)
 ------------------
 - Ported integration test to osl_mysql_test resource

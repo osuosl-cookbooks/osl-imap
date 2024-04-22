@@ -17,7 +17,7 @@ provisioner:
   # multiple_converge: 2
 
   # ohai_plugin from the dovecot cookbook should declare `unified_mode true`
-  
+ 
   # the dovecot cookbook is relying on the deprecated ohai cookbook in order to function.
   deprecations_as_errors: false
   data_bags_path: test/integration/data_bags

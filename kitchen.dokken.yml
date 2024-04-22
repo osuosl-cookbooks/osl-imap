@@ -13,7 +13,6 @@ transport:
 provisioner:
   name: dokken
   product_name: cinc
-  enforce_idempotency: true
   chef_binary: /opt/cinc/bin/cinc-client
 
 platforms:

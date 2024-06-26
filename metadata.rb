@@ -8,7 +8,6 @@ source_url       'https://github.com/osuosl-cookbooks/osl-imap'
 description      'Installs/Configures osl-imap'
 version          '2.0.4'
 
-supports         'centos', '~> 7.0'
 supports         'almalinux', '~> 8.0'
 
 depends          'certificate'

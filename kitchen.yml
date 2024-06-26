@@ -35,7 +35,6 @@ provisioner:
 
 platforms:
   - name: almalinux-8
-  - name: centos-7
 
 suites:
   # All suites fail in Docker due to sendmail in osl-imap-test::sent_test_email

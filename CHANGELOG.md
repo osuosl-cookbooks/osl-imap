@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+2.1.0 (2024-06-26)
+------------------
+- Remove support for CentOS 7
+
 2.0.4 (2024-04-22)
 ------------------
 - Test Kitchen Config Refactor

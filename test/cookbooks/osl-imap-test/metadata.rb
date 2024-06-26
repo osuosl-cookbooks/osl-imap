@@ -12,5 +12,3 @@ depends          'osl-acme'
 depends          'osl-apache'
 depends          'osl-mysql'
 depends          'osl-postfix'
-
-supports         'centos', '~> 7.0'

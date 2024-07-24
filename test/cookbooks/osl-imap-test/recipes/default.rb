@@ -21,3 +21,5 @@ node.default['postfix']['main']['home_mailbox'] = 'Maildir/'
 node.default['postfix']['main']['mydestination'] = 'foo.org'
 
 include_recipe 'osl-postfix'
+
+package %w(fetchmail procmail)

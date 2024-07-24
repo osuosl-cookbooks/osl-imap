@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'expect'
-
 execute 'send-email' do
   command <<~EOC
     sendmail foo@foo.org <<< "Subject: IMAP Test Email for Foo
@@ -30,4 +28,11 @@ end
 
 file '/tmp/test_email_sent' do
   action :nothing
+end
+
+execute 'fetchmail -ak && touch /tmp/fetchmail' do
+  user 'foo'
+  group 'foo'
+  login true
+  creates '/tmp/fetchmail'
 end

@@ -1,10 +1,11 @@
 wildcard = input('wildcard')
 lmtp = input('lmtp')
 auth_username_format = input('auth_username_format')
+docker = inspec.file('/.dockerenv').exist?
 
 require_controls 'osuosl-baseline' do
   control 'ssl-baseline'
-end
+end unless docker
 
 control 'default' do
   describe package 'dovecot' do

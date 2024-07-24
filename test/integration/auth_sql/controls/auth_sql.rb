@@ -20,31 +20,9 @@ control 'auth_sql' do
     its('content') { should match(/^default_pass_scheme = SHA512-CRYPT$/) }
   end
 
-  describe file '/var/log/maillog' do
-    its('content') { should match %r{postfix/local.* to=<foo@foo.org>.* status=sent \(delivered to maildir\)$} }
-  end
-
   # Log in and fetch mail via IMAPS port
-  describe command %(expect <<< '
-spawn openssl s_client -connect localhost:993
-expect {
-  -re "OK .* Dovecot ready." {
-    send -- "1 login foo@foo.org bar\r"
-    exp_continue
-  } -re "1 OK .* Logged in" {
-    send -- "2 select inbox\r"
-    exp_continue
-  } -re "2 OK .* Select completed" {
-    send -- "3 FETCH 1:* BODY\\[TEXT\\]\r"
-    exp_continue
-  } "This test email should be fetchable via IMAP" {
-    exit 0
-  } default {
-    exit 1
-  }
-}') do
+  describe command 'grep -r ^Subject: /tmp/Maildir' do
     its('exit_status') { should eq 0 }
-    its('stdout') { should match(/This test email should be fetchable via IMAP/) }
-    its('stderr') { should cmp '' }
+    its('stdout') { should match(/Subject: IMAP Test Email for Foo/) }
   end
 end

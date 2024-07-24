@@ -24,6 +24,24 @@ user 'foo' do
   manage_home true
 end
 
+cookbook_file '/home/foo/.procmailrc' do
+  owner 'foo'
+  group 'foo'
+  source 'procmailrc'
+end
+
+cookbook_file '/home/foo/.fetchmailrc' do
+  source 'fetchmailrc-sql'
+  owner 'foo'
+  group 'foo'
+  mode '0700'
+end
+
+directory '/tmp/Maildir' do
+  owner 'foo'
+  group 'foo'
+end
+
 osl_imap_dovecot 'sql' do
   auth_type :mysql
   auth_username_format '%Lu'

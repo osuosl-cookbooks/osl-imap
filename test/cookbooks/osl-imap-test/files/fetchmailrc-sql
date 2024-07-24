@@ -1,0 +1,3 @@
+poll localhost proto IMAP:
+  user 'foo@foo.org' password 'bar' ssl no sslcertck
+  mda '/usr/bin/procmail';

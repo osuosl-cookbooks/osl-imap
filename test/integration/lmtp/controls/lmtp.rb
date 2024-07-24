@@ -19,7 +19,9 @@ control 'lmtp' do
     its('stdout') { should match %r{^virtual_transport = lmtp:unix:private/dovecot-lmtp$} }
   end
 
-  describe file '/var/log/maillog' do
-    its('content') { should match(/dovecot.*: lmtp\(foo\).*: .* saved mail to INBOX$/) }
+  # Log in and fetch mail via IMAPS port
+  describe command 'grep -r ^Subject: /tmp/Maildir' do
+    its('exit_status') { should eq 0 }
+    its('stdout') { should match(/Subject: IMAP Test Email for Foo/) }
   end
 end

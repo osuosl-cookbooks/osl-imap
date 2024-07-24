@@ -4,5 +4,9 @@ driver = <%= @auth_type %>
 connect = host=<%= @db_host %> dbname=<%= @db_name %> user=<%= @db_user %> password=<%= @db_pass %>
 default_pass_scheme = <%= @default_pass_scheme %>
 password_query = <%= @password_query %>
+<% if @user_query -%>
 user_query = <%= @user_query %>
+<% end -%>
+<% if @iterate_query -%>
 iterate_query = <%= @iterate_query %>
+<% end -%>

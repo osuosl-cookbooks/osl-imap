@@ -130,3 +130,9 @@ action :create do
     action [:enable, :start]
   end
 end
+
+action :reload do
+  service 'dovecot' do
+    action :reload
+  end
+end

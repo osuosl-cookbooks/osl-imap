@@ -16,13 +16,6 @@ end
 
 shared_context 'dovecot_stubs' do
   before do
-    stub_data_bag_item(nil, nil).and_return(
-      id: 'test_item',
-      host: 'sql.foo.bar',
-      db: 'dovecot_db',
-      type: 'mysql',
-      user: 'dovecot',
-      pass: 'test password'
-    )
+    stub_command('/usr/bin/test /etc/alternatives/mta -ef /usr/sbin/sendmail.postfix')
   end
 end

@@ -1,13 +1,12 @@
 source 'https://supermarket.chef.io'
 solver :ruby, :required
 
-cookbook 'dovecot', git: 'git@github.com:osuosl-cookbooks/dovecot-cookbook'
+cookbook 'osl-acme', git: 'git@github.com:osuosl-cookbooks/osl-acme'
+cookbook 'osl-apache', git: 'git@github.com:osuosl-cookbooks/osl-apache'
 cookbook 'osl-firewall', git: 'git@github.com:osuosl-cookbooks/osl-firewall'
 
 # test dependencies
 cookbook 'osl-imap-test', path: 'test/cookbooks/osl-imap-test'
-cookbook 'osl-acme', git: 'git@github.com:osuosl-cookbooks/osl-acme'
-cookbook 'osl-apache', git: 'git@github.com:osuosl-cookbooks/osl-apache'
 cookbook 'osl-docker', git: 'git@github.com:osuosl-cookbooks/osl-docker'
 cookbook 'osl-git', git: 'git@github.com:osuosl-cookbooks/osl-git'
 cookbook 'osl-gpu', git: 'git@github.com:osuosl-cookbooks/osl-gpu', branch: 'main'

@@ -1,9 +1,8 @@
-include_recipe 'osl-acme::server'
 include_recipe 'osl-imap-test::default'
 
-osl_imap_dovecot 'imap.osuosl.org' do
+osl_imap_dovecot 'default' do
   auth_type :system
-  letsencrypt true
+  wildcard_cert true
 end
 
 user 'foo' do

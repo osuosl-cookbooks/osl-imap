@@ -43,9 +43,11 @@ describe 'osl-imap-test::auth_system' do
             extra_options: %w(auth_verbose=yes),
             mail_location: 'maildir:~/Maildir',
             mbox_write_locks: 'dotlock fcntl',
+            passdb: [],
             protocols: 'imap pop3',
             ssl_cert: '/etc/pki/tls/certs/wildcard.pem',
             ssl_key: '/etc/pki/tls/private/wildcard.key',
+            userdb: [],
           }
         )
       end
@@ -60,7 +62,6 @@ describe 'osl-imap-test::auth_system' do
             mail_location = maildir:~/Maildir
             mbox_write_locks = dotlock fcntl
 
-            # System Auth
             passdb {
               args = dovecot
               driver = pam

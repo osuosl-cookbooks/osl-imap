@@ -50,9 +50,11 @@ describe 'osl-imap-test::auth_sql' do
             extra_options: [],
             mail_location: 'maildir:~/Maildir',
             mbox_write_locks: 'dotlock fcntl',
+            passdb: [],
             protocols: 'imap pop3',
             ssl_cert: '/etc/pki/tls/certs/wildcard.pem',
             ssl_key: '/etc/pki/tls/private/wildcard.key',
+            userdb: [],
           }
         )
       end

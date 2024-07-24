@@ -5,6 +5,7 @@ control 'lmtp' do
     its('stdout') { should match %r{service/lmtp/unix_listener/\\svar\\sspool\\spostfix\\sprivate\\sdovecot-lmtp/mode=0600} }
     its('stdout') { should match %r{service/lmtp/unix_listener/\\svar\\sspool\\spostfix\\sprivate\\sdovecot-lmtp/user=postfix} }
     its('stdout') { should match %r{service/lmtp/unix_listener/\\svar\\sspool\\spostfix\\sprivate\\sdovecot-lmtp/group=postfix} }
+    its('stdout') { should match %r{userdb/0/auth_verbose=yes} }
   end
 
   describe file '/var/spool/postfix/private/dovecot-lmtp' do

@@ -20,10 +20,12 @@ property :letsencrypt, [true, false], default: false
 property :mail_location, String, default: 'maildir:~/Maildir'
 property :mbox_write_locks, String, default: 'dotlock fcntl'
 property :password_query, String
+property :passdb, Array, default: []
 property :protocols, String, default: 'imap pop3'
 property :ssl_cert, String
 property :ssl_key, String
 property :user_query, String
+property :userdb, Array, default: []
 property :wildcard_cert, [true, false], default: false
 
 action :create do
@@ -86,9 +88,11 @@ action :create do
       extra_options: new_resource.extra_options,
       mail_location: new_resource.mail_location,
       mbox_write_locks: new_resource.mbox_write_locks,
+      passdb: new_resource.passdb,
       protocols: new_resource.protocols,
       ssl_cert: ssl_cert,
-      ssl_key: ssl_key
+      ssl_key: ssl_key,
+      userdb: new_resource.userdb
     )
     notifies :reload, 'service[dovecot]'
   end

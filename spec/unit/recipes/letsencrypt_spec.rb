@@ -70,9 +70,11 @@ describe 'osl-imap-test::letsencrypt' do
             extra_options: %w(auth_verbose=yes),
             mail_location: 'maildir:~/Maildir',
             mbox_write_locks: 'dotlock fcntl',
+            passdb: [],
             protocols: 'imap pop3',
             ssl_cert: '/etc/pki/tls/imap.osuosl.org.crt',
             ssl_key: '/etc/pki/tls/imap.osuosl.org.key',
+            userdb: [],
           }
         )
       end
@@ -87,7 +89,6 @@ describe 'osl-imap-test::letsencrypt' do
             mail_location = maildir:~/Maildir
             mbox_write_locks = dotlock fcntl
 
-            # System Auth
             passdb {
               args = dovecot
               driver = pam

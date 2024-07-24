@@ -38,8 +38,9 @@ describe 'osl-imap-test::auth_system' do
           cookbook: 'osl-imap',
           variables: {
             auth_mechanisms: 'plain login',
-            auth_username_format: '%n',
             auth_type: 'system',
+            auth_username_format: '%n',
+            extra_options: %w(auth_verbose=yes),
             mail_location: 'maildir:~/Maildir',
             mbox_write_locks: 'dotlock fcntl',
             protocols: 'imap pop3',
@@ -92,6 +93,9 @@ describe 'osl-imap-test::auth_system' do
             ssl_key = </etc/pki/tls/private/wildcard.key
             ssl_options = no_compression no_ticket
             ssl_prefer_server_ciphers = yes
+
+            # Extra options
+            auth_verbose=yes
           EOF
         )
       end

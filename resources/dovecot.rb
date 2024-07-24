@@ -11,6 +11,8 @@ property :db_name, String, sensitive: true
 property :db_pass, String, sensitive: true
 property :db_user, String, sensitive: true
 property :default_pass_scheme, String, default: 'SHA512-CRYPT'
+property :extra_ldap_options, Array, default: []
+property :extra_options, Array, default: []
 property :iterate_query, String
 property :ldap_base, String
 property :ldap_uris, String
@@ -79,8 +81,9 @@ action :create do
     cookbook 'osl-imap'
     variables(
       auth_mechanisms: new_resource.auth_mechanisms,
-      auth_username_format: new_resource.auth_username_format,
       auth_type: new_resource.auth_type.to_s,
+      auth_username_format: new_resource.auth_username_format,
+      extra_options: new_resource.extra_options,
       mail_location: new_resource.mail_location,
       mbox_write_locks: new_resource.mbox_write_locks,
       protocols: new_resource.protocols,
@@ -116,6 +119,7 @@ action :create do
     sensitive true
     variables(
       auth_type: new_resource.auth_type.to_s,
+      extra_options: new_resource.extra_ldap_options,
       ldap_base: new_resource.ldap_base,
       ldap_uris: new_resource.ldap_uris
     )

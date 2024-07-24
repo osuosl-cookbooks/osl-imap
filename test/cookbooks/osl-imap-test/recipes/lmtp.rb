@@ -8,6 +8,7 @@ osl_imap_dovecot 'lmtp' do
   auth_type :system
   protocols 'imap pop3 lmtp'
   wildcard_cert true
+  extra_options %w(auth_verbose=yes)
 end
 
 user 'foo' do

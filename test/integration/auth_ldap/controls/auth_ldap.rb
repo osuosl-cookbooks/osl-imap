@@ -1,5 +1,5 @@
 control 'auth_sql' do
-  describe command 'doveconf -S userdb passdb' do
+  describe command 'doveconf -S userdb passdb auth_verbose' do
     its('stdout') { should match %r{^passdb/0/driver=ldap$} }
     its('stdout') { should match %r{^passdb/0/args=/etc/dovecot/dovecot-ldap.conf.ext$} }
     its('stdout') { should match %r{^userdb/0/driver=ldap$} }
@@ -14,5 +14,6 @@ control 'auth_sql' do
     its('content') { should match(%r{^uris = ldaps://ldap\.osuosl\.org$}) }
     its('content') { should match(/^base = ou=People,dc=osuosl,dc=org$/) }
     its('content') { should match(/^auth_bind = yes$/) }
+    its('content') { should match(/^debug_level=1$/) }
   end
 end

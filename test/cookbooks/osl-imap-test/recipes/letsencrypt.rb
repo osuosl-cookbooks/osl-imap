@@ -4,6 +4,7 @@ include_recipe 'osl-imap-test::default'
 osl_imap_dovecot 'imap.osuosl.org' do
   auth_type :system
   letsencrypt true
+  extra_options %w(auth_verbose=yes)
 end
 
 user 'foo' do

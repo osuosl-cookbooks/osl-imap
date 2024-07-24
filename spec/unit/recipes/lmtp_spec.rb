@@ -38,8 +38,9 @@ describe 'osl-imap-test::lmtp' do
           cookbook: 'osl-imap',
           variables: {
             auth_mechanisms: 'plain login',
-            auth_username_format: '%n',
             auth_type: 'system',
+            auth_username_format: '%n',
+            extra_options: %w(auth_verbose=yes),
             mail_location: 'maildir:~/Maildir',
             mbox_write_locks: 'dotlock fcntl',
             protocols: 'imap pop3 lmtp',

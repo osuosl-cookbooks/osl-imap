@@ -38,8 +38,9 @@ describe 'osl-imap-test::auth_ldap' do
           cookbook: 'osl-imap',
           variables: {
             auth_mechanisms: 'plain login',
-            auth_username_format: '%Lu',
             auth_type: 'ldap',
+            auth_username_format: '%Lu',
+            extra_options: [],
             mail_location: 'maildir:~/Maildir',
             mbox_write_locks: 'dotlock fcntl',
             protocols: 'imap pop3',
@@ -107,6 +108,7 @@ describe 'osl-imap-test::auth_ldap' do
           sensitive: true,
           variables: {
             auth_type: 'ldap',
+            extra_options: %w(debug_level=1),
             ldap_base: 'ou=People,dc=osuosl,dc=org',
             ldap_uris: 'ldaps://ldap.osuosl.org',
           }
@@ -121,6 +123,9 @@ describe 'osl-imap-test::auth_ldap' do
             uris = ldaps://ldap.osuosl.org
             base = ou=People,dc=osuosl,dc=org
             auth_bind = yes
+
+            # Extra options
+            debug_level=1
           EOF
         )
       end

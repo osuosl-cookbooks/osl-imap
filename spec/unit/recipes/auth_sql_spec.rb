@@ -45,8 +45,9 @@ describe 'osl-imap-test::auth_sql' do
           cookbook: 'osl-imap',
           variables: {
             auth_mechanisms: 'plain login',
-            auth_username_format: '%Lu',
             auth_type: 'mysql',
+            auth_username_format: '%Lu',
+            extra_options: [],
             mail_location: 'maildir:~/Maildir',
             mbox_write_locks: 'dotlock fcntl',
             protocols: 'imap pop3',

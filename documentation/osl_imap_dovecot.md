@@ -13,6 +13,7 @@
 | `auth_mechanisms`      | String  | `plain login`       |          | Authentication mechanisms                                      |
 | `auth_type`            | Symbol  |                     | yes      | Authentication type                                            |
 | `auth_username_format` | String  | `%n`                |          | Username formatting                                            |
+| `extra_options`        | Array   | `[]`                |          | Extra options to be added to `dovecot.conf`                    |
 | `letsencrypt`          | Boolean | `false`             |          | Setup SSL using LetsEncrypt                                    |
 | `mail_location`        | String  | `maildir:~/Maildir` |          | Location for users' mailboxes                                  |
 | `mbox_write_locks`     | String  | `dotlock fcntl`     |          | Which locking methods to use for locking mbox                  |
@@ -39,10 +40,11 @@ These properties are only used with MySQL authentication.
 
 
 ### LDAP Authentication properties
-| Property    | Type   | Description      |
-|-------------|--------|------------------|
-| `ldap_base` | String | LDAP base        |
-| `ldap_uris` | String | LDAP URIs to use |
+| Property              | Type   | Description                               |
+|-----------------------|--------|-------------------------------------------|
+| `extra_ldap_options ` | Array  | Extra options for `dovecot-ldap.conf.ext` |
+| `ldap_base`           | String | LDAP base                                 |
+| `ldap_uris`           | String | LDAP URIs to use                          |
 
 ## Examples
 

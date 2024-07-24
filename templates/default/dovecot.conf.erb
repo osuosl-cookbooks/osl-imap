@@ -67,3 +67,10 @@ ssl_cipher_list = ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDH
 ssl_key = <<%= @ssl_key %>
 ssl_options = no_compression no_ticket
 ssl_prefer_server_ciphers = yes
+<% if !@extra_options.empty? -%>
+
+# Extra options
+<% end -%>
+<% @extra_options.each do |opt| -%>
+<%= opt %>
+<% end -%>

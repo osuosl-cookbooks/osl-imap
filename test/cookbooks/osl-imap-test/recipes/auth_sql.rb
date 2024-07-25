@@ -1,44 +1,6 @@
-#
-# Cookbook:: osl-imap-test
-# Recipe:: auth_sql
-#
-# Copyright:: 2018-2024, Oregon State University
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+include_recipe 'osl-imap-test::default'
 
-node.default['dovecot']['conf']['mail_location'] = 'maildir:~/Maildir'
-node.default['postfix']['main']['home_mailbox'] = 'Maildir/'
-node.default['postfix']['main']['mydestination'] = 'foo.org'
-
-include_recipe 'osl-postfix'
-
-user 'foo' do
-  uid 1234
-  home '/home/foo'
-  manage_home true
-end
-
-# Install expect for default suite's tests
-package 'expect'
-
-node.default['dovecot']['conf']['sql']['iterate_query'] = 'SELECT username, domain FROM users'
-node.default['dovecot']['conf']['sql']['password_query'] = 'SELECT username, domain, password ' \
-  "FROM users WHERE username = '%n' AND domain = '%d'"
-node.default['dovecot']['conf']['sql']['user_query'] = 'SELECT home, uid, gid FROM users ' \
-  "WHERE username = '%n' AND domain = '%d'"
-
-db = data_bag_item(node['osl-imap']['auth_sql']['data_bag'],
-                   node['osl-imap']['auth_sql']['data_bag_item'])
+db = data_bag_item('sql_creds', 'mysql')
 
 osl_mysql_test db['db'] do
   username db['user']
@@ -46,25 +8,51 @@ osl_mysql_test db['db'] do
   server_password 'password'
 end
 
-mariadb_database 'Create Tables' do
-  password 'password'
-  sql <<-EOT
-    USE #{db['db']};
-    CREATE TABLE IF NOT EXISTS users (
-      username VARCHAR(128) NOT NULL UNIQUE,
-      domain VARCHAR(128) NOT NULL,
-      password VARCHAR(120) NOT NULL,
-      home VARCHAR(255) NOT NULL,
-      uid INTEGER NOT NULL,
-      gid INTEGER NOT NULL
-    );
-  EOT
-  action :query
+cookbook_file '/tmp/dovecot.sql' do
+  source 'dovecot.sql'
+  sensitive true # just to hide massive wall of text
 end
 
-mariadb_database 'Insert Users' do
-  password 'password'
-  # Note the extra breaks in the password field are needed to make sure mariadb doesn't try to format the numbers after $
-  sql "USE #{db['db']}; INSERT IGNORE INTO users VALUES ('foo', 'foo.org', '{SHA512-CRYPT}$' '6' '$.rQ8TNWq1dDlHMF3' '$' 'R4Wb8DaF5TNjeequKpMKHIBKlZIbHvoQwikWTTEMmKO7i8tTmQyVFNoqBUsO2h.1.PkkfaMqbTI88mSSKAU580', '/home/foo', 1234, 100);"
-  action :query
+execute 'import sql dump' do
+  command 'mysql -u dovecot_user -pdovecot_pass dovecot < /tmp/dovecot.sql && touch /root/.dovecot-imported'
+  creates '/root/.dovecot-imported'
 end
+
+user 'foo' do
+  uid 1234
+  home '/home/foo'
+  manage_home true
+end
+
+cookbook_file '/home/foo/.procmailrc' do
+  owner 'foo'
+  group 'foo'
+  source 'procmailrc'
+end
+
+cookbook_file '/home/foo/.fetchmailrc' do
+  source 'fetchmailrc-sql'
+  owner 'foo'
+  group 'foo'
+  mode '0700'
+end
+
+directory '/tmp/Maildir' do
+  owner 'foo'
+  group 'foo'
+end
+
+osl_imap_dovecot 'sql' do
+  auth_type :mysql
+  auth_username_format '%Lu'
+  wildcard_cert true
+  db_host db['host']
+  db_user db['user']
+  db_pass db['pass']
+  db_name db['db']
+  iterate_query 'SELECT username, domain FROM users'
+  password_query "SELECT username, domain, password FROM users WHERE username = '%n' AND domain = '%d'"
+  user_query "SELECT home, uid, gid FROM users WHERE username = '%n' AND domain = '%d'"
+end
+
+include_recipe 'osl-imap-test::send_test_email'

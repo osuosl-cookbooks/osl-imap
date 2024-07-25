@@ -11,5 +11,6 @@ version          '2.1.0'
 supports         'almalinux', '~> 8.0'
 
 depends          'certificate'
-depends          'dovecot', '~> 3.3.0'
+depends          'osl-acme'
+depends          'osl-apache'
 depends          'osl-firewall'

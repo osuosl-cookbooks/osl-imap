@@ -22,15 +22,4 @@ node.default['postfix']['main']['mydestination'] = 'foo.org'
 
 include_recipe 'osl-postfix'
 
-# Use PAM to authenticate users
-node.default['osl-imap']['auth_system']['enable_userdb'] = true
-node.default['osl-imap']['auth_system']['enable_passdb'] = true
-
-user 'foo' do
-  password '$1$B7Bo6eja$C5aj4AIKxw437TcwiTWnR1' # "bar"
-  home '/home/foo'
-  manage_home true
-end
-
-# Install expect for default suite's tests
-package 'expect'
+package %w(fetchmail procmail)

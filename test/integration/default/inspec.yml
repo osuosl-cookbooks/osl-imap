@@ -1,0 +1,14 @@
+name: default
+depends:
+  - name: osuosl-baseline
+    git: https://github.com/osuosl/osuosl-baseline.git
+inputs:
+  - name: ssl_port
+    profile: osuosl-baseline
+    value:
+      - 993
+      - 995
+  - name: wildcard
+  - name: lmtp
+  - name: auth_username_format
+    value: '%n'

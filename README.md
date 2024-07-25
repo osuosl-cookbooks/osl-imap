@@ -6,75 +6,11 @@ Requirements
 ------------
 
 #### Platforms
-- CentOS 7
 - AlmaLinux 8
 
-#### Cookbooks
-- [certificate](https://supermarket.chef.io/cookbooks/certificate)
-- [dovecot](https://supermarket.chef.io/cookbooks/dovecot)
-- [firewall](https://github.com/osuosl-cookbooks/firewall)
+## Resources
 
-Attributes
-----------
-#### osl-imap::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['osl-imap']['auth_sql']['data_bag']</tt></td>
-    <td>String</td>
-    <td>Name of databag containing SQL credentials</td>
-    <td><tt>nil</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['osl-imap']['auth_sql']['data_bag_item']</tt></td>
-    <td>String</td>
-    <td>Name of databag item containing SQL credentials</td>
-    <td><tt>nil</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['osl-imap']['auth_sql']['enable_userdb']</tt></td>
-    <td>Boolean</td>
-    <td>Whether to enable SQL as an authentication backend for identifying users. Requires <tt>node['dovecot']['conf']['sql']['user_query']</tt> to be specified.</td>
-    <td><tt>false</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['osl-imap']['auth_sql']['enable_passdb']</tt></td>
-    <td>Boolean</td>
-    <td>Whether to enable SQL as an authentication backend for verifying passwords. Requires <tt>node['dovecot']['conf']['sql']['password_query']</tt> to be specified.</td>
-    <td><tt>false</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['osl-imap']['auth_system']['enable_userdb']</tt></td>
-    <td>Boolean</td>
-    <td>Whether to use the system's passwd file as an authentication backend for identifying users.</td>
-    <td><tt>false</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['osl-imap']['auth_system']['enable_passdb']</tt></td>
-    <td>Boolean</td>
-    <td>Whether to enable PAM as an authentication backend for verifying passwords.</td>
-    <td><tt>false</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['osl-imap']['enable_lmtp']</tt></td>
-    <td>Boolean</td>
-    <td>Whether to enable Lightweight Mail Transfer Protocol (LMTP) socket (for use with Postfix).</td>
-    <td><tt>false</tt></td>
-  </tr>
-</table>
-
-Usage
------
-To use this cookbook to install and configure dovecot, include `osl-imap::default` and set the
-needed attributes from the `osl-imap` and `dovecot` cookbooks. This cookbook includes several
-attribute toggles for enabling/disabling different authentication backends for dovecot, but
-more specific non-default configurations will require setting relevant attributes in the `dovecot`
-cookbook.
+- [osl_imap_dovecot](documentation/osl_imap_dovecot.md)
 
 Contributing
 ------------

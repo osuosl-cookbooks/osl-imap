@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+3.0.1 (2024-10-21)
+------------------
+- Add AlmaLinux 9 support
+
 3.0.0 (2024-07-25)
 ------------------
 - Create osl_imap_dovecot resource

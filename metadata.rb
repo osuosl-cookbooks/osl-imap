@@ -9,6 +9,7 @@ description      'Installs/Configures osl-imap'
 version          '3.0.0'
 
 supports         'almalinux', '~> 8.0'
+supports         'almalinux', '~> 9.0'
 
 depends          'certificate'
 depends          'osl-acme'

@@ -7,6 +7,8 @@ Requirements
 
 #### Platforms
 - AlmaLinux 8
+- AlmaLinux 9
+- AlmaLinux 10
 
 ## Resources
 

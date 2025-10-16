@@ -99,3 +99,10 @@ suites:
       inspec_tests:
         - test/integration/default
         - test/integration/auth_system
+  - name: no_ssl
+    run_list:
+      - recipe[osl-imap-test::no_ssl]
+    verifier:
+      inspec_tests:
+        - test/integration/auth_system
+        - test/integration/no_ssl

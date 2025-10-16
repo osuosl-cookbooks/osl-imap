@@ -80,6 +80,7 @@ service lmtp {
   }
 }
 <% end -%>
+<% if @ssl_cert -%>
 service imap-login {
   inet_listener imap {
     port = 0
@@ -92,8 +93,20 @@ service pop3-login {
 }
 ssl = required
 ssl_cert = <<%= @ssl_cert %>
+<% else -%>
+ssl = no
+disable_plaintext_auth = no
+service imap-login {
+  inet_listener imap {
+    address = 127.0.0.1
+    port = 143
+  }
+}
+<% end -%>
 ssl_cipher_list = ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:!DES-CBC3-SHA:!DSS
+<% if @ssl_key -%>
 ssl_key = <<%= @ssl_key %>
+<% end -%>
 ssl_options = no_compression no_ticket
 ssl_prefer_server_ciphers = yes
 <% if !@extra_options.empty? -%>

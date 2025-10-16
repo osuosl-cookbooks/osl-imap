@@ -6,7 +6,7 @@ chef_version     '>= 16.0'
 issues_url       'https://github.com/osuosl-cookbooks/osl-imap/issues'
 source_url       'https://github.com/osuosl-cookbooks/osl-imap'
 description      'Installs/Configures osl-imap'
-version          '3.0.2'
+version          '3.1.0'
 
 supports         'almalinux', '~> 8.0'
 supports         'almalinux', '~> 9.0'

@@ -3,6 +3,10 @@ osl-imap CHANGELOG
 This file is used to list changes made in each version of the
 osl-imap cookbook.
 
+3.1.1 (2026-06-29)
+------------------
+- cinc: updated kitchen and dokken files
+
 3.1.0 (2025-10-16)
 ------------------
 - Do not include ssl_cert and ssl_key if values are nil
